@@ -1,0 +1,74 @@
+<form hx-post="{{ form_action }}"
+      hx-target="#modal-panel"
+      hx-swap="innerHTML"
+      hx-on:htmx:after-request="handleAfterRequest($event)"
+      enctype="multipart/form-data"
+      x-data="productForm('{{ image_preview }}')"
+      x-init="initialize()"
+      class="space-y-4">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="space-y-2">
+        <label for="{{ form.name.id_for_label }}" class="text-sm font-semibold">Mahsulot nomi (majburiy)</label>
+        <input type="text" name="{{ form.name.html_name }}" id="{{ form.name.id_for_label }}"
+               class="form-input"
+               placeholder="Masalan: Olma sharbati 1L"
+               required
+               autocomplete="off"
+               value="{{ form.name.value|default_if_none:'' }}">
+        {% for error in form.name.errors %}
+            <p class="text-sm text-destructive">{{ error }}</p>
+        {% endfor %}
+    </div>
+    <div class="space-y-2">
+        <label for="{{ form.price.id_for_label }}" class="text-sm font-semibold">Narx (majburiy)</label>
+        <input type="text" name="{{ form.price.html_name }}" id="{{ form.price.id_for_label }}"
+               class="form-input"
+               placeholder="15000"
+               inputmode="numeric"
+               required
+               autocomplete="off"
+               x-ref="priceInput"
+               x-on:input="formatPrice($event)"
+               value="{{ form.price.value|default_if_none:'' }}">
+        <p class="text-xs text-text-muted">Narx raqam ko‘rinishida bo‘lsin, masalan 12000.</p>
+        {% for error in form.price.errors %}
+            <p class="text-sm text-destructive">{{ error }}</p>
+        {% endfor %}
+    </div>
+    <div class="space-y-2">
+        <label class="text-sm font-semibold">Rasm</label>
+        <div class="relative rounded-2xl border-2 border-dashed border-border bg-surface/60 p-6 text-center"
+             :class="{ 'border-primary': dragging }"
+             @dragover.prevent="dragging = true"
+             @dragleave.prevent="dragging = false"
+             @drop.prevent="handleDrop($event)">
+            <p class="text-sm text-text-muted">Rasmni tashlang yoki yuklash uchun bosing.</p>
+            <input type="file"
+                   name="{{ form.image.html_name }}"
+                   id="{{ form.image.id_for_label }}"
+                   accept="image/png,image/jpeg,image/webp"
+                   class="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                   @change="handleFileChange($event)">
+            <template x-if="preview">
+                <img :src="preview" alt="Preview" class="mx-auto mt-4 h-24 rounded-2xl object-cover">
+            </template>
+        </div>
+        {% for error in form.image.errors %}
+            <p class="text-sm text-destructive">{{ error }}</p>
+        {% endfor %}
+        <p class="text-xs text-text-muted">Maksimal hajm 5MB, jpeg/png/webp.</p>
+    </div>
+    <div class="flex items-center justify-between">
+        <div class="flex gap-2">
+            <button type="button" class="secondary-btn" @click="closeModal()">Bekor qilish</button>
+            <button type="submit"
+                    class="primary-btn disabled:opacity-50"
+                    :disabled="submitting || !isValid">
+                <span x-show="!submitting">{{ submit_label }}</span>
+                <span x-show="submitting">Saqlanmoqda…</span>
+            </button>
+        </div>
+    </div>
+    <div id="modal-loading" class="htmx-indicator text-sm text-text-muted">Qayta ishlanmoqda…</div>
+</form>

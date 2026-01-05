@@ -1,0 +1,11 @@
+<div class="rounded-3xl border border-border bg-surface px-8 py-12 text-center shadow-inner">
+    <p class="text-xl font-semibold">Hali mahsulotlar yo‘q</p>
+    <p class="mt-2 text-text-muted">Sotuvni nazorat qilish uchun birinchi mahsulotingizni qo‘shing.</p>
+    <button class="primary-btn mt-6"
+            hx-get="{% url 'products-web-new' %}"
+            hx-target="#modal-panel"
+            hx-trigger="click"
+            hx-swap="innerHTML">
+        Mahsulot qo‘shish
+    </button>
+</div>

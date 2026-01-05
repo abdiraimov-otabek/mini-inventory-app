@@ -1,0 +1,9 @@
+{% with products=page_obj.object_list %}
+<div id="products-cards" class="lg:hidden" hx-swap-oob="outerHTML">
+    {% include "products/_cards_mobile.html" %}
+</div>
+
+<div id="products-table" class="hidden lg:block">
+    {% include "products/_table.html" %}
+</div>
+{% endwith %}

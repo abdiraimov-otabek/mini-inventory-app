@@ -1,0 +1,13 @@
+<div x-show="modalOpen"
+     x-transition.opacity
+     class="fixed inset-0 z-40 flex items-center justify-center bg-black/70 px-4 py-8 text-text-primary"
+     @keydown.escape.window="closeModal()"
+     @click.self="closeModal()"
+     x-cloak>
+    <div id="modal-panel"
+         class="w-full max-w-lg rounded-2xl border border-border bg-surface shadow-2xl focus:outline-none"
+         x-trap="modalOpen"
+         tabindex="-1">
+        <!-- HTMX content swaps here -->
+    </div>
+</div>

@@ -1,0 +1,33 @@
+{% load product_tags %}
+<div class="rounded-3xl border border-border bg-surface p-4 shadow-inner">
+    <div class="flex items-center gap-3">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="h-16 w-16 rounded-2xl object-cover">
+        {% else %}
+            <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-border text-base font-semibold text-text-muted">
+                {{ product.name|slice:":2"|upper }}
+            </div>
+        {% endif %}
+        <div class="flex-1">
+            <p class="text-base font-semibold">{{ product.name }}</p>
+            <p class="text-sm text-text-muted">{{ product.created_at|added_label }}</p>
+        </div>
+        <p class="text-base font-semibold text-right">{{ product.price|price_format }} {{ currency }}</p>
+    </div>
+    <div class="mt-4 flex gap-2">
+        <button class="secondary-btn flex-1"
+                hx-get="{% url 'products-web-edit' product.id %}"
+                hx-target="#modal-panel"
+                hx-trigger="click"
+                hx-swap="innerHTML">
+            Tahrirlash
+        </button>
+        <button class="destructive-btn flex-1"
+                hx-get="{% url 'products-web-delete' product.id %}"
+                hx-target="#modal-panel"
+                hx-trigger="click"
+                hx-swap="innerHTML">
+            O‘chirish
+        </button>
+    </div>
+</div>

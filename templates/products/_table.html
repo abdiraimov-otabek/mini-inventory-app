@@ -1,0 +1,40 @@
+<div id="products-table"
+     class="hidden lg:block"
+     hx-get="{% url 'products-web-table' %}?q={{ search_query|urlencode }}&sort={{ sort }}"
+     hx-trigger="reloadProducts from:body"
+     hx-target="#products-table"
+     hx-swap="outerHTML">
+    <table class="w-full table-fixed divide-y divide-border text-sm">
+        <thead>
+        <tr class="text-text-muted">
+            <th class="py-3 text-left">Rasm</th>
+            <th class="py-3 text-left">Nomi</th>
+            <th class="py-3 text-right">Narx / Sana</th>
+            <th class="py-3 text-right">Amallar</th>
+        </tr>
+        </thead>
+        <tbody id="products-tbody" class="divide-y divide-border">
+        {% for product in products %}
+            {% include "products/_row.html" %}
+        {% endfor %}
+        
+        {% if page_obj.has_next %}
+        <tr id="load-more-trigger">
+            <td colspan="4" class="py-4 text-center">
+                <button class="secondary-btn"
+                        hx-get="{% url 'products-web-table' %}?page={{ page_obj.next_page_number }}&q={{ search_query|urlencode }}&sort={{ sort }}"
+                        hx-target="#products-tbody"
+                        hx-swap="beforeend"
+                        hx-trigger="click"
+                        hx-on:click="this.hidden = true">
+                    Yana yuklash
+                </button>
+            </td>
+        </tr>
+        {% endif %}
+        </tbody>
+    </table>
+    {% if not products %}
+        {% include "components/empty_state.html" %}
+    {% endif %}
+</div>

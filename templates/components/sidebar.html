@@ -1,0 +1,12 @@
+<aside class="hidden w-64 flex-shrink-0 border-r border-border bg-surface px-5 py-6 lg:block">
+    <div class="mb-10">
+        <p class="text-sm uppercase tracking-wide text-text-muted">Inventar</p>
+        <p class="text-2xl font-semibold">Panel</p>
+    </div>
+    <nav class="space-y-2">
+        <a href="{% url 'products-web-list' %}"
+           class="nav-link {% if request.resolver_match.url_name == 'products-web-list' %}nav-link-active{% endif %}">
+            Mahsulotlar
+        </a>
+    </nav>
+</aside>

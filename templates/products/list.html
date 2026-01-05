@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Mahsulotlar{% endblock %}
+{% block content %}
+{% include "products/_stats.html" %}
+<div class="mt-6 flex flex-col gap-4 rounded-3xl border border-border bg-surface p-4">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div class="flex-1 space-y-2">
+            <input type="search"
+                   name="q"
+                   value="{{ search_query }}"
+                   placeholder="Mahsulot qidirish"
+                   class="form-input w-full"
+                   hx-get="{% url 'products-web-table' %}"
+                   hx-target="#products-table"
+                   hx-trigger="keyup changed delay:500ms"
+                   hx-include="[name='sort']"
+                   hx-swap="outerHTML">
+            <select name="sort" class="form-input w-full"
+                    hx-get="{% url 'products-web-table' %}"
+                    hx-target="#products-table"
+                    hx-trigger="change"
+                    hx-include="[name='q']"
+                    hx-swap="outerHTML">
+                <option value="created" {% if sort == 'created' %}selected{% endif %}>Saralash: qo‘shilgan sana</option>
+                <option value="price" {% if sort == 'price' %}selected{% endif %}>Saralash: narx</option>
+            </select>
+        </div>
+        <button class="secondary-btn lg:hidden"
+                hx-get="{% url 'products-web-new' %}"
+                hx-target="#modal-panel"
+                hx-trigger="click"
+                hx-swap="innerHTML">
+            Yangi mahsulot
+        </button>
+    </div>
+
+    <div id="products-table" hx-swap="outerHTML">
+        {% include "products/_table.html" %}
+    </div>
+
+    <div id="products-cards" class="lg:hidden" hx-swap="outerHTML">
+        {% include "products/_cards_mobile.html" %}
+    </div>
+</div>
+
+
+
+{% endblock %}

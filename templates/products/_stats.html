@@ -1,0 +1,18 @@
+{% load product_tags %}
+<dl class="grid grid-cols-2 gap-4">
+    <div class="stat-card">
+        <dt class="truncate text-sm font-medium text-text-muted">Jami mahsulot</dt>
+        <dd class="mt-1 text-2xl font-semibold tracking-tight">{{ stats.total }}</dd>
+    </div>
+    <div class="stat-card">
+        <dt class="truncate text-sm font-medium text-text-muted">So‘nggi</dt>
+        <dd class="mt-1 text-2xl font-semibold tracking-tight">
+            {% if stats.last_product %}
+                {{ stats.last_product.created_at|added_label }}
+            {% else %}
+                Hali mahsulot yo‘q
+            {% endif %}
+        </dd>
+    </div>
+</dl>
+

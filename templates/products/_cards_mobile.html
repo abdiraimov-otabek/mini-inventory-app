@@ -1,0 +1,21 @@
+<div id="products-cards-container" class="space-y-4 lg:hidden">
+    {% for product in products %}
+        {% include "products/_card.html" %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <div id="load-more-trigger-cards">
+        <button class="secondary-btn w-full"
+                hx-get="{% url 'products-web-table' %}?view=cards&page={{ page_obj.next_page_number }}&q={{ search_query|urlencode }}&sort={{ sort }}"
+                hx-target="#products-cards-container"
+                hx-swap="beforeend"
+                hx-trigger="click"
+                hx-on:click="this.hidden = true">
+            Yana yuklash
+        </button>
+    </div>
+    {% endif %}
+</div>
+{% if not products %}
+    {% include "components/empty_state.html" %}
+{% endif %}

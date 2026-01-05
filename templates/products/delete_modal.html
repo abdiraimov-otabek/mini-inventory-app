@@ -1,0 +1,13 @@
+<section class="space-y-4 p-6">
+    <h2 class="text-xl font-semibold text-destructive">Mahsulot o‘chirilsinmi?</h2>
+    <p class="text-sm text-text-muted">Bu amal "{{ product.name }}" mahsulotini butunlay o‘chiradi. Qayta tiklab bo‘lmaydi.</p>
+    <form hx-post="{% url 'products-web-delete' product.id %}"
+          hx-target="#modal-panel"
+          hx-swap="innerHTML"
+          hx-on:htmx:after-request="if ($event.detail.successful && $event.detail.xhr.status === 204) window.AppShell?.closeModal()"
+          class="flex justify-end gap-3">
+        {% csrf_token %}
+        <button type="button" class="secondary-btn" @click="closeModal()">Bekor qilish</button>
+        <button type="submit" class="destructive-btn">O‘chirish</button>
+    </form>
+</section>
